@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import "./css/Nav.css";
+import { useNavigate } from "react-router-dom";
 
 export default function Nav() {
   const [show, setShow] = useState(false);
+  const [searchValue, setSearchValue] = useState<string>("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
-      console.log("window.scrollY", window.scrollY);
+      // console.log("window.scrollY", window.scrollY);
 
       if (window.scrollY > 50) {
         setShow(true);
@@ -18,6 +21,11 @@ export default function Nav() {
     return () => {};
   });
 
+  function handleChange(e: any) {
+    setSearchValue(e.target.value);
+    navigate(`/search?q=${e.target.value}`);
+  }
+
   return (
     <nav className={`nav ${show && "nav_black"}`}>
       <img
@@ -25,6 +33,13 @@ export default function Nav() {
         src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/170px-Netflix_2015_logo.svg.png"
         className="nav__logo"
         onClick={() => window.location.reload()}
+      />
+      <input
+        value={searchValue}
+        onChange={handleChange}
+        className="nav__input"
+        type="text"
+        placeholder="키워드를 입력해주세요"
       />
       <img
         alt="User logo"

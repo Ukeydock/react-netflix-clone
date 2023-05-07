@@ -1,42 +1,35 @@
 import React from "react";
 import logo from "./logo.svg";
-import "./App.css";
 import Nav from "./components/Nav";
 import Banner from "./components/Banner";
 import Row from "./components/Row";
 import requests from "./api/request";
+import Footer from "./components/Footer";
+import { Outlet, Route, Routes } from "react-router-dom";
+import MainPage from "./pages/MainPage";
+import DetailPage from "./pages/DetailPage";
+import SearchPage from "./pages/SearchPage";
+
+const Layout = () => {
+  return (
+    <div>
+      <Nav />
+      <Outlet />
+      <Footer />
+    </div>
+  );
+};
 
 function App() {
   return (
-    <div className="App" style={{ backgroundColor: "black" }}>
-      <Nav />
-      <Banner />
-
-      <Row
-        title="Netflix"
-        id="NO"
-        fetchUrl={requests.fetchNetflixOriginals}
-        isLarageRow={true}
-      />
-
-      <Row
-        title="Trending Now"
-        id="TN"
-        fetchUrl={requests.fetchTrending}
-        isLarageRow={false}
-      />
-      <Row
-        title="Top Rated"
-        id="TR"
-        fetchUrl={requests.fetchTopRated}
-        isLarageRow={false}
-      />
-      <Row
-        title="Action Movie"
-        id="AM"
-        fetchUrl={requests.fetchActionMovies}
-        isLarageRow={false}
-      />
+    <div className="app" style={{ backgroundColor: "black" }}>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<MainPage />} />
+          <Route path=":movieId" element={<DetailPage />} />
+          <Route path="search" element={<SearchPage />} />
+        </Route>
+      </Routes>
     </div>
   );
 }
